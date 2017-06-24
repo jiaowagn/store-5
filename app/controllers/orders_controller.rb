@@ -41,6 +41,12 @@ class OrdersController < ApplicationController
     redirect_to order_path(@order.token), notice: "使用支付宝付款成功"
   end
 
+  def apply_to_cancel
+    @order = Order.find_by_token(params[:id])
+    OrderMailer.apply_cancel(@order).deliver!
+    redirect_to order_path(@order.token)
+  end
+
   private
 
   def order_params
